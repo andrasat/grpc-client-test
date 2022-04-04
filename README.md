@@ -1,3 +1,3 @@
-# local-server
+# local-client
 
-local server
+local client
