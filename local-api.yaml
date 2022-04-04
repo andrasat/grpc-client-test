@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: base-local-api
+  labels:
+    app: base-local-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: base-local-api
+  template:
+    metadata:
+      labels:
+        app: base-local-api
+    spec:
+      containers:
+        - name: base-local-api
+          image: localhost:53456/local-api:1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 50011
+          livenessProbe:
+            httpGet:
+              port: 50011
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              port: 50011
+            initialDelaySeconds: 5
+          resources:
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          # env:
+          #   - name: GRPC_TRACE
+          #     value: "all"
+          #   - name: GRPC_VERBOSITY
+          #     value: "DEBUG"
